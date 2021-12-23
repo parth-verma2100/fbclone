@@ -1,0 +1,50 @@
+<% if user_signed_in? %>
+ <% if current_user.role.downcase=="general"%>
+  <% if @posts.size==0 %>
+    <h4 style="text-align:center">Add new post <%= link_to "here",new_post_path, style:"text-decoration:none"%></h4>
+  <% else %>
+    <h1 style="text-align:center">All Posts</h1>
+    <ul style="display:grid;">
+        <% @posts.each do |post| %>
+          <div class="card mb-4" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">Post created by <%= User.find(post.user_id).name %></h5>
+            <p class="card-text"><%= post.content %></p>
+          </div>
+           <% if current_user.id == post.user_id %>
+            <%= link_to "Like", post ,style:"text-decoration:none;", class:"btn btn-primary mb-1"%> 
+            <%
+=begin%>
+ <%= link_to "Delete", destroy_post_path(post), method: :delete,style:"text-decoration:none;", class:"btn btn-primary mb-1"%>  
+<%
+=end%>
+          <% else %>
+            <%= link_to "Go to course", root_path ,style:"text-decoration:none;", class:"btn btn-primary mb-1"%> 
+          <% end %> 
+        </div>
+        <% end %>
+    </ul>
+    <h4 style="text-align:center">Add new post <%= link_to "here",new_post_path, style:"text-decoration:none"%></h4>
+  <% end %>
+    <h4 style="text-align:center">Click to 
+    <%= link_to "Logout", destroy_user_session_path,method: :delete %>
+    </h4>
+  <% else %>
+    <% if @users.size==0 %>
+      <h4 style="text-align:center; color:red">no user exist</h4>
+    <% else %>
+    <h1 style="text-align:center">All Users</h1>
+    <ul style="display:grid;">
+        <% @users.each do |post| %>
+          <div class="card-body">
+            <h5 class="card-title"><%= post.name %>
+            <%= link_to "Destroy", admin_destroy_user_path(user), method: :delete, data: { confirm: "You sure?" }, class: "btn btn-primary btn-md" %> </h5>
+          </div>
+        <% end %>
+    </ul>
+    <%= link_to "logout", destroy_user_session_url , class: 'default_btn transp_btn' %>
+    <% end %>
+  <% end %>  
+<% else %>
+  <h1 style="text-align:center"><%= link_to "Login", user_session_path, style:"text-decoration:none"%> to see posts</h1>
+<% end %>
