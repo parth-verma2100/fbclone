@@ -9,6 +9,8 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :phone, presence: true
   enum role: {Administrator: 1, General: 2}
-  scope :administrator, -> { where(role: 1) } #not understood
-  scope :general, -> { where(role:2) }  
+  def self.search(search)
+    if search
+      search_user=User.find_by(name: search)
+  end
 end

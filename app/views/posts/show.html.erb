@@ -1,5 +1,4 @@
 <h1 style="text-align:center">Post Details</h1>
-
 <ul style="display:flex; flex-wrap:wrap;">
      
         <div class="card" style="width: 18rem;">
@@ -7,6 +6,6 @@
             <h5 class="card-title">Post created by <%= User.find(@post.user_id).name %></h5>
             <p class="card-text"><%= @post.content %></p>
           </div>
-          <%= link_to "Delete", destroy_post_path(@post) ,style:"text-decoration:none;", class:"btn btn-primary m-3"%> 
+          
         </div>
 </ul>

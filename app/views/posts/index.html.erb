@@ -13,13 +13,12 @@
           </div>
            <% if current_user.id == post.user_id %>
             <%= link_to "Like", post ,style:"text-decoration:none;", class:"btn btn-primary mb-1"%> 
-            <%
-=begin%>
- <%= link_to "Delete", destroy_post_path(post), method: :delete,style:"text-decoration:none;", class:"btn btn-primary mb-1"%>  
-<%
-=end%>
+            <%= link_to "Share", root_path ,style:"text-decoration:none;", class:"btn btn-primary mb-1"%> 
+            <%= button_to "Delete", post_path(post),method: :delete,style:"text-decoration:none;", class:"btn btn-primary", style:"width:100%"%> 
           <% else %>
-            <%= link_to "Go to course", root_path ,style:"text-decoration:none;", class:"btn btn-primary mb-1"%> 
+            <%= link_to "Like", root_path ,style:"text-decoration:none;", class:"btn btn-primary mb-1"%> 
+            <%= link_to "Share", root_path ,style:"text-decoration:none;", class:"btn btn-primary mb-1"%> 
+            <%= link_to "Comment", root_path ,style:"text-decoration:none;", class:"btn btn-primary mb-1"%> 
           <% end %> 
         </div>
         <% end %>
@@ -27,7 +26,7 @@
     <h4 style="text-align:center">Add new post <%= link_to "here",new_post_path, style:"text-decoration:none"%></h4>
   <% end %>
     <h4 style="text-align:center">Click to 
-    <%= link_to "Logout", destroy_user_session_path,method: :delete %>
+    <%= button_to "Logout", destroy_user_session_path,method: :delete , class:"btn btn-primary btn-lg", style:"width:10rem"%>
     </h4>
   <% else %>
     <% if @users.size==0 %>
@@ -38,11 +37,11 @@
         <% @users.each do |post| %>
           <div class="card-body">
             <h5 class="card-title"><%= post.name %>
-            <%= link_to "Destroy", admin_destroy_user_path(user), method: :delete, data: { confirm: "You sure?" }, class: "btn btn-primary btn-md" %> </h5>
+            <%= button_to "Destroy", destroy_user_session_path(post), method: :delete, data: { confirm: "You sure?" }, class: "btn btn-primary btn-md" %> </h5>
           </div>
         <% end %>
     </ul>
-    <%= link_to "logout", destroy_user_session_url , class: 'default_btn transp_btn' %>
+    <%= button_to "logout", destroy_user_session_url ,method: :delete,class: 'default_btn transp_btn' %>
     <% end %>
   <% end %>  
 <% else %>

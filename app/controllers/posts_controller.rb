@@ -16,7 +16,6 @@ class PostsController < ApplicationController
         if user_signed_in?
           @user=current_user
           @post = @user.posts.create(post_params)
-          # session[:course_id] = @course.id
           if @post.save
              redirect_to root_path
           end
@@ -26,10 +25,10 @@ class PostsController < ApplicationController
         
     end
     def destroy
-          @user=current_user
+          @user=User.find(current_user.id)
           @post = @user.posts.find(params[:id])
           @post.destroy
-          redirect_to course_path
+          redirect_to root_path
     end
     private
     def post_params
