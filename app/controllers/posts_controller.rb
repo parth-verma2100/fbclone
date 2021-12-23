@@ -3,6 +3,28 @@ class PostsController < ApplicationController
         @posts = Post.all
         @users=User.all
     end
+    def accept
+        @reqs=Requestnotification.where(user:params[:id].to_i, friend_user:current_user.id).to_a
+        @reqs1=Requestnotification.where(user:current_user.id, friend_user:params[:id].to_i).to_a
+        @reqs.each do |req|
+            req.destroy
+        end
+        @reqs1.each do |req|
+            req.destroy
+        end
+        @accept=Friend.create(current_user: current_user.id, friend_user:params[:id], date: Date.today())
+        if @accept.save
+            render "posts/accept"
+        end        
+    end
+    def addfriend
+        if user_signed_in?
+          @request=Requestnotification.create(user: current_user.id, friend_user:params[:id])
+          @notify=Requestnotification.where(user: current_user.id).to_a
+          @friendlist=Friend.where(current_user: current_user.id).to_a
+        end
+    end
+    
     def show
         @post=Post.find(params[:id])
     end

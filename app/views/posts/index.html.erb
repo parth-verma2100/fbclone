@@ -25,7 +25,47 @@
     </ul>
     <h4 style="text-align:center">Add new post <%= link_to "here",new_post_path, style:"text-decoration:none"%></h4>
   <% end %>
-    <h4 style="text-align:center">Click to 
+    
+  <h1 style="text-align:center">Friend List</h1>
+    <ul style="display:flex;">
+        <% @users.each do |user| %>
+          <% if user.id!=current_user.id %>
+          <div class="card mb-4" style="width: 18rem;margin-right:2rem;margin-top:2rem">
+          <div class="card-body">
+            <h5 class="card-title" style="text-align:center"><%= user.name %></h5>
+            <% if Friend.exists?(current_user: current_user.id, friend_user: user.id) %>
+            <%= link_to "Already a Friend","",class: "btn btn-primary", style:"width: 100%;"%>
+            <% else %>
+            <% if Requestnotification.exists?(user: current_user.id, friend_user: user.id) %>
+            <%= link_to "Friend Request Sent","pop",class: "btn btn-primary", style:"width: 100%;"%>
+            <% else %>
+            <%= link_to "Add Friend",addfriend_path(user), class: "btn btn-primary", style:"width: 100%;"%>
+            <% end %>
+            
+            <% end %>
+            <p class="card-text"></p>
+          </div> 
+          </div>
+          <% end %>
+        <% end %>
+    </ul>
+<h1 style="text-align:center">All Notifications</h1>
+    <ul style="display:grid;">
+      <% if  !Requestnotification.exists?(friend_user: current_user.id) %>
+        <h3 style="text-align:center; color:red">No new notifications</h3>
+      <% else %>
+        <% Requestnotification.where(friend_user: current_user.id).to_a.each do |friend| %>
+          <div class="card mb-4" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title" style="text-align:center"><%= User.find(friend.user).name%> sent you a follow request</h5>
+            <p class="card-text"><%= link_to "Accept Request",accept_path(friend.user), class: "btn btn-primary", style:"width: 100%;"%></p>
+          </div> 
+          </div>
+        <% end %>
+      <% end %>
+    </ul>
+
+<h4 style="text-align:center">Click to 
     <%= button_to "Logout", destroy_user_session_path,method: :delete , class:"btn btn-primary btn-lg", style:"width:10rem"%>
     </h4>
   <% else %>
@@ -47,3 +87,4 @@
 <% else %>
   <h1 style="text-align:center"><%= link_to "Login", user_session_path, style:"text-decoration:none"%> to see posts</h1>
 <% end %>
+
